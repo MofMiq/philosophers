@@ -6,11 +6,11 @@
 #    By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/17 14:06:30 by marirodr          #+#    #+#              #
-#    Updated: 2023/07/26 13:21:32 by marirodr         ###   ########.fr        #
+#    Updated: 2023/07/31 16:34:45 by marirodr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		= philosophers
+NAME		= philo
 
 CC			= gcc
 
@@ -24,6 +24,7 @@ SRC			= src/philosophers.c \
 						src/errors.c \
 						src/check_arg.c \
 						src/time.c \
+						src/init.c \
 
 OBJ			= $(SRC:.c=.o)
 

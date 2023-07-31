@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:18:39 by marirodr          #+#    #+#             */
-/*   Updated: 2023/07/31 13:12:41 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/07/31 15:13:01 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,12 @@ long long	ft_get_system_time(void)
 
 long long	ft_current_time(t_table *table)
 {
+	// long long system;
+	// long long now;
+	// system = ft_get_system_time();
+	// printf("%lld system time\n", system);
+	// now = ft_get_system_time() - system;
+	// printf("%lld now time\n", now);
+	// printf("%lld putito tiempito\n", table->time_start);
 	return (ft_get_system_time() - table->time_start);
 }

@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:21:57 by marirodr          #+#    #+#             */
-/*   Updated: 2023/07/31 12:42:26 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/07/31 17:05:59 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ typedef struct s_table
 typedef struct s_philo
 {
 	pthread_t		thread;
-	int				r_fork;
-	int				l_fork;
+	pthread_mutex_t	r_fork;
+	pthread_mutex_t	l_fork;
 	int				id;
 	int				status;
 	int				cur_eat;
@@ -70,11 +70,15 @@ int		ft_number_limit(char *str);
 long	ft_atol(char *str);
 
 //main
-void	ft_init_table(int argc, char **argv, t_table *table);
-void	ft_init_forks(t_table *table);
+
 
 //time.c
 long long	ft_get_system_time(void);
 long long	ft_current_time(t_table *table);
+
+//init.c
+void	ft_init_forks(t_table *table);
+void	ft_init_table(int argc, char **argv, t_table *table);
+void	ft_init_philosophers(t_philo *philo, t_table *table);
 
 #endif
