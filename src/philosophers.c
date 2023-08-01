@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:42:59 by marirodr          #+#    #+#             */
-/*   Updated: 2023/07/31 17:24:47 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/01 12:45:39 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_infinite_loop(t_philo *philo, t_table *table)
 	while (1)
 	{
 		printf("%lld %d bucle infinito\n", ft_current_time(table), philo->id);
-		usleep(1000);
+		usleep(10000);
 	}
 }
 
@@ -29,15 +29,23 @@ void	*ft_testing(void *arg)
 
 	philo = (t_philo *)arg;
 	i = ft_current_time(philo->table);
-	//printf("time now is %lld\n", i);
-	//printf("[%lld] [%d] TIEMPO DEL SISTEMA!!!\n", philo->table->time_start, philo->id);
-	//los tiempos de sistema y de inicio del programa estan intercambiados
+	if (philo->table->nb_must_eat == 0)
+		return (NULL);
+	if (philo->table->time_to_die == 0)
+		return (NULL);
+	//alguna comprobacion mas?
 	while (i < 0)
 	{
 		i = ft_current_time(philo->table);
 		philo->last_eat = i;
 		usleep(1);
 	}
+	/*while (philo->table->dead == 0)
+	{
+		ft_eat(philo);
+		ft_sleep(philo);
+		ft_think(philo);
+	}*/
 	return (NULL);
 }
 
@@ -49,8 +57,10 @@ void	ft_create_thread(t_philo *philo, t_table *table)
 	if (table->nbr_philo == 1)
 	{
 		table->time_start = ft_get_system_time();
-		if ((pthread_create(&philo[i].thread, NULL, ft_testing, &philo[i])) != 0)
+		if ((pthread_create(&philo[i].thread, NULL, ft_one_philo, &philo[i])) != 0)
 			ft_print_error(THREAD);
+		pthread_join(philo[i].thread, NULL);
+		ft_free_all(philo, table);
 	}
 	else
 	{
@@ -62,9 +72,9 @@ void	ft_create_thread(t_philo *philo, t_table *table)
 				ft_print_error(THREAD);
 			i++;
 		}
+		ft_infinite_loop(philo, table);
+		//pthread_join(philo[i].thread, NULL);
 	}
-	//ft_infinite_loop(philo, table);
-	//pthread_join(philo[i].thread, NULL);
 }
 
 int	main(int argc, char **argv)
@@ -82,4 +92,8 @@ int	main(int argc, char **argv)
 		ft_print_error(MALLOC_FAIL);
 	ft_init_philosophers(philo, &table);
 	ft_create_thread(philo, &table);
+	//teoria
+	/*while (table.dead == 0)
+	{
+	}*/
 }

@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:33:17 by marirodr          #+#    #+#             */
-/*   Updated: 2023/07/31 17:23:50 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/01 12:37:46 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	ft_init_table(int argc, char **argv, t_table *table)
 	else
 		table->nb_must_eat = -1;
 	table->dead = 0;
+	table->mutex_table = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(table->mutex_table, NULL);
 	ft_init_forks(table);
 }
 
@@ -72,4 +74,3 @@ void	ft_init_philosophers(t_philo *philo, t_table *table)
 		i++;
 	}
 }
-

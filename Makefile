@@ -6,7 +6,7 @@
 #    By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/17 14:06:30 by marirodr          #+#    #+#              #
-#    Updated: 2023/07/31 16:34:45 by marirodr         ###   ########.fr        #
+#    Updated: 2023/08/01 12:26:48 by marirodr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,10 +21,11 @@ CTHR		= -pthread
 CFLAGS	= -g -Wall -Wextra -Werror
 
 SRC			= src/philosophers.c \
-						src/errors.c \
+						src/print_n_free.c \
 						src/check_arg.c \
 						src/time.c \
 						src/init.c \
+						src/rutine.c \
 
 OBJ			= $(SRC:.c=.o)
 
