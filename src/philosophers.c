@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:42:59 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/01 12:45:39 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/01 15:30:19 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	ft_infinite_loop(t_philo *philo, t_table *table)
 {
+	(void)philo;
 	(void)table;
 	while (1)
 	{
-		printf("%lld %d bucle infinito\n", ft_current_time(table), philo->id);
-		usleep(10000);
+		usleep(10);
 	}
 }
 
@@ -40,12 +40,12 @@ void	*ft_testing(void *arg)
 		philo->last_eat = i;
 		usleep(1);
 	}
-	/*while (philo->table->dead == 0)
+	while (philo->table->dead == 0) // como me organizo la comprobacion de muerte?
 	{
 		ft_eat(philo);
 		ft_sleep(philo);
 		ft_think(philo);
-	}*/
+	}
 	return (NULL);
 }
 
@@ -59,7 +59,6 @@ void	ft_create_thread(t_philo *philo, t_table *table)
 		table->time_start = ft_get_system_time();
 		if ((pthread_create(&philo[i].thread, NULL, ft_one_philo, &philo[i])) != 0)
 			ft_print_error(THREAD);
-		pthread_join(philo[i].thread, NULL);
 		ft_free_all(philo, table);
 	}
 	else

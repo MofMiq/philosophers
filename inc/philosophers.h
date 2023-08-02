@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:21:57 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/01 12:37:24 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/01 16:25:41 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ typedef struct s_table
 typedef struct s_philo
 {
 	pthread_t		thread;
-	pthread_mutex_t	r_fork;
-	pthread_mutex_t	l_fork;
+	pthread_mutex_t	*r_fork;
+	pthread_mutex_t	*l_fork;
+	int				indice[2];
 	int				id;
 	int				status;
 	int				cur_eat;

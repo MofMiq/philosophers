@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:33:17 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/01 12:37:46 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:22:04 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,20 @@ void	ft_init_philosophers(t_philo *philo, t_table *table)
 		philo[i].table = table;
 		if (philo[i].id == table->nbr_philo)
 		{
-			philo[i].l_fork = table->forks[i];
-			philo[i].r_fork = table->forks[0];
+			philo[i].l_fork = &table->forks[i];
+			philo[i].r_fork = &table->forks[0];
+			philo[i].indice[0] = i;//erase
+			philo[i].indice[1] = 0;//erase
+			printf("ULTIMO:%d\n", i);//erase
 		}
 		else
 		{
-			philo[i].l_fork = table->forks[i];
-			philo[i].r_fork = table->forks[i + 1];
+			philo[i].l_fork = &table->forks[i];
+			philo[i].r_fork = &table->forks[i + 1];
+			philo[i].indice[0] = i;//erase
+			philo[i].indice[1] = i + 1;//erase
+			printf("ESTA ES LA IIII:%d\n", philo->indice[0]);//erase
+			printf("ESTA ES LA IIII:%d\n", philo->indice[1]);//erase
 		}
 		i++;
 	}
