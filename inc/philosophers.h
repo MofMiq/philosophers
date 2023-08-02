@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:21:57 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/01 16:25:41 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/02 15:58:41 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define BAD_IMPUT		2
 # define EXCED_LIMT		3
 # define MALLOC_FAIL	4
-# define FORK			5
+# define MUTEX			5
 # define THREAD			6
 
 typedef struct s_table
@@ -41,6 +41,7 @@ typedef struct s_table
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				nb_must_eat;
+	int				finished;
 	int				dead;
 	long long		time_start;
 	pthread_mutex_t	*forks;
@@ -52,12 +53,10 @@ typedef struct s_philo
 	pthread_t		thread;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
-	int				indice[2];
+	int				indice[2]; //erase
 	int				id;
-	int				status;
 	int				cur_eat;
 	long long		last_eat;
-	int				dead_time;
 	t_table			*table;
 }	t_philo;
 
@@ -71,8 +70,12 @@ int			ft_is_number(char *str);
 int			ft_number_limit(char *str);
 long		ft_atol(char *str);
 
-//main
-
+//philosophers.c (main)
+int			ft_must_stop(t_table *table);
+void		ft_infinite_loop(t_philo *philo, t_table *table);
+void		*ft_testing(void *arg);
+void		ft_create_thread(t_philo *philo, t_table *table);
+int			ft_is_dead(t_philo *philo);
 //time.c
 long long	ft_get_system_time(void);
 long long	ft_current_time(t_table *table);

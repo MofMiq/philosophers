@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:33:17 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/01 17:22:04 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/02 16:02:57 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_init_forks(t_table *table)
 		if ((pthread_mutex_init(&table->forks[i], NULL)) != 0)
 		{
 			//own free function & detroy mutex
-			ft_print_error(FORK);
+			ft_print_error(MUTEX);
 		}
 		i++;
 	}
@@ -43,9 +43,13 @@ void	ft_init_table(int argc, char **argv, t_table *table)
 		table->nb_must_eat = ft_atol(argv[5]);
 	else
 		table->nb_must_eat = -1;
+	table->finished = 0;
 	table->dead = 0;
 	table->mutex_table = malloc(sizeof(pthread_mutex_t));
-	pthread_mutex_init(table->mutex_table, NULL);
+	if (!table->mutex_table)
+		ft_print_error(MALLOC_FAIL);
+	if ((pthread_mutex_init(table->mutex_table, NULL)) != 0)
+		ft_print_error(MUTEX);
 	ft_init_forks(table);
 }
 
@@ -59,7 +63,6 @@ void	ft_init_philosophers(t_philo *philo, t_table *table)
 		philo[i].id = i + 1;
 		philo[i].cur_eat = 0;
 		philo[i].last_eat = 0;
-		philo[i].dead_time = 0;
 		philo[i].table = table;
 		if (philo[i].id == table->nbr_philo)
 		{
@@ -67,7 +70,6 @@ void	ft_init_philosophers(t_philo *philo, t_table *table)
 			philo[i].r_fork = &table->forks[0];
 			philo[i].indice[0] = i;//erase
 			philo[i].indice[1] = 0;//erase
-			printf("ULTIMO:%d\n", i);//erase
 		}
 		else
 		{
@@ -75,8 +77,8 @@ void	ft_init_philosophers(t_philo *philo, t_table *table)
 			philo[i].r_fork = &table->forks[i + 1];
 			philo[i].indice[0] = i;//erase
 			philo[i].indice[1] = i + 1;//erase
-			printf("ESTA ES LA IIII:%d\n", philo->indice[0]);//erase
-			printf("ESTA ES LA IIII:%d\n", philo->indice[1]);//erase
+			//printf("ESTA ES LA IIII:%d\n", philo[i].indice[0]);//erase
+			//printf("ESTA ES LA IIII:%d\n", philo[i].indice[1]);//erase
 		}
 		i++;
 	}
