@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:42:59 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/02 16:06:32 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:55:32 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ int	ft_is_dead(t_philo *philo)
 		ft_print_msg(philo, 2); //?? porque cuando lo pongo aqui si va
 		philo->table->dead = 1;
 		pthread_mutex_unlock(philo->table->mutex_table);
-		return (0);
+		return (1);
 	}
 	else
 	{
 		pthread_mutex_unlock(philo->table->mutex_table);
-		return (1);
+		return (0);
 	}
 }
 
@@ -59,7 +59,6 @@ void	*ft_testing(void *arg)
 		return (NULL);
 	if (philo->table->time_to_die == 0)
 		return (NULL);
-	//alguna comprobacion mas?
 	while (i < 0)
 	{
 		i = ft_current_time(philo->table);

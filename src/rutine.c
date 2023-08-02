@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 10:25:04 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/02 13:50:39 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:38:20 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ los zurdos empiezan cogiendo el tenedor a su izquierda (id - 1).*/
 
 void	*ft_eat(t_philo *philo)
 {
-	if (ft_must_stop(philo->table) || philo->table->dead == 1)
+	if (ft_must_stop(philo->table))
 		return (NULL);
 	if (philo->id % 2 == 0)
 	{
@@ -60,20 +60,16 @@ void	*ft_eat(t_philo *philo)
 	}
 	ft_print_msg(philo, 3);
 	philo->last_eat = ft_current_time(philo->table);
-	while (!ft_must_stop(philo->table) && (ft_current_time(philo->table) < philo->last_eat + philo->table->time_to_eat))
-	{
-		if (philo->table->dead == 1)
-			break ;
-		usleep(10);
-	}
 	philo->cur_eat++;
-	//printf("%d VECES QUE A COMIDO %d PHILO\n", philo->cur_eat, philo->id);
 	if (philo->cur_eat == philo->table->nb_must_eat) //??
 	{
 		pthread_mutex_lock(philo->table->mutex_table);
 		philo->table->finished++;
 		pthread_mutex_unlock(philo->table->mutex_table);
 	}
+	while (!ft_must_stop(philo->table) && (ft_current_time(philo->table) < philo->last_eat + philo->table->time_to_eat))
+		usleep(10);
+	//printf("%d VECES QUE A COMIDO %d PHILO\n", philo->cur_eat, philo->id);
 	//printf("%d FILOSOFOS HAN COMIDO SUFICIENTEMENTE\n", philo->table->finished);
 	pthread_mutex_unlock(philo->r_fork);
 	pthread_mutex_unlock(philo->l_fork);
@@ -89,11 +85,7 @@ void	*ft_sleep(t_philo *philo)
 	ft_print_msg(philo, 4);
 	sleep = ft_current_time(philo->table);
 	while (!ft_must_stop(philo->table) && (ft_current_time(philo->table) < sleep + philo->table->time_to_sleep))
-	{
-		if (philo->table->dead == 1)
-			break ;
 		usleep(10);
-	}
 	return (NULL);
 }
 
@@ -102,17 +94,13 @@ void	*ft_think(t_philo *philo)
 	long long	think;
 	long long	time;
 
-	if (ft_must_stop(philo->table) || ft_is_dead(philo))
+	if (ft_must_stop(philo->table) || philo->table->dead == 1)
 		return (NULL);
 	ft_print_msg(philo, 5);
 	think = (philo->table->time_to_die - (philo->table->time_to_eat + philo->table->time_to_sleep)) / 2;
 	time = ft_current_time(philo->table);
 	//casos particulares a raiz del resultado de think??
 	while (!ft_must_stop(philo->table) && (ft_current_time(philo->table) < time + think))
-	{
-		if (philo->table->dead == 1)
-			break ;
 		usleep(10);
-	}
 	return (NULL);
 }

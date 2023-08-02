@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:46:17 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/02 15:58:48 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:54:00 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,19 @@ void	ft_print_error(int error)
 void	ft_print_msg(t_philo *philo, int i)
 {
 	if (i == 1 && !ft_must_stop(philo->table))
-		printf("%s[%lld] [%d] has taken a fork%s\n", YELLOW, \
+		printf("%s[%lld] %d has taken a fork%s\n", YELLOW, \
 			ft_current_time(philo->table), philo->id, END);
 	else if (i == 2 && !ft_must_stop(philo->table))
-		printf("%s[%lld] [%d] died%s\n", RED, \
+		printf("%s[%lld] %d died%s\n", RED, \
 			ft_current_time(philo->table), philo->id, END);
 	else if (i == 3 && !ft_must_stop(philo->table))
-		printf("%s[%lld] [%d] is eating%s\n", PURPLE, \
+		printf("%s[%lld] %d is eating%s\n", PURPLE, \
 			ft_current_time(philo->table), philo->id, END);
 	else if (i == 4 && !ft_must_stop(philo->table))
-		printf("%s[%lld] [%d] is sleeping %s\n", BLUE, \
+		printf("%s[%lld] %d is sleeping %s\n", BLUE, \
 			ft_current_time(philo->table), philo->id, END);
 	else if (i == 5 && !ft_must_stop(philo->table))
-		printf("%s[%lld] [%d] is thinking%s\n", PINK, \
+		printf("%s[%lld] %d is thinking%s\n", PINK, \
 			ft_current_time(philo->table), philo->id, END);
 }
 
