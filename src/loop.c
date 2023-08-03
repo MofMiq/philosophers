@@ -6,17 +6,34 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:33:17 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/03 12:05:37 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/03 18:21:26 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 
+
+/*si comento los mutex_table me dan pecha de warnings de data race cuango
+compilo con fsanitize pero el caso "base" de muerte (4 310 200 100) sigue
+funcionando.
+en cambio si descomento los mutex_table, se me reducen pecha los warning -solo
+me queda aparentemente 1 en ft_is_dead- pero el caso "base" de muerte deja
+de funcionar, no termina y sale data race en ft_is_dead
+en ft_is_dead hhay aparentemente data race en cualquier caso*/
+
 int	ft_must_stop(t_table *table)
 {
+	pthread_mutex_lock(table->mutex_table);
 	if (table->finished == table->nbr_philo || table->dead == 1)
+	{
+		pthread_mutex_unlock(table->mutex_table);
 		return (1);
-	return (0);
+	}
+	else
+	{
+		pthread_mutex_unlock(table->mutex_table);
+		return (0);
+	}
 }
 
 //ft_print_msg(philo, 2); ?? porque cuando lo pongo aqui si va

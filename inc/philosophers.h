@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:21:57 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/03 13:09:06 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:42:52 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_table
 	pthread_mutex_t	*mutex_table;
 }	t_table;
 
-//int				indice[2]; //for debuging forks
+//int indice[2]; //for debuging forks
 
 typedef struct s_philo
 {
@@ -60,6 +60,13 @@ typedef struct s_philo
 	long long		last_eat;
 	t_table			*table;
 }	t_philo;
+
+//philosophers.c (main)
+void		ft_init_forks(t_table *table);
+void		ft_init_table(int argc, char **argv, t_table *table);
+void		ft_init_philosophers(t_philo *philo, t_table *table);
+//debug
+void		ft_leaks(void);
 
 //print_n_free.c
 void		ft_print_error(int error);
@@ -73,10 +80,6 @@ int			ft_is_number(char *str);
 int			ft_number_limit(char *str);
 long		ft_atol(char *str);
 
-//philosophers.c (main)
-void		ft_init_forks(t_table *table);
-void		ft_init_table(int argc, char **argv, t_table *table);
-void		ft_init_philosophers(t_philo *philo, t_table *table);
 //time.c
 long long	ft_get_system_time(void);
 long long	ft_current_time(t_table *table);
@@ -94,8 +97,5 @@ void		*ft_eat(t_philo *philo);
 void		*ft_sleep(t_philo *philo);
 void		*ft_think(t_philo *philo);
 void		ft_right_or_left_handed(t_philo *philo);
-
-//debug
-void		ft_leaks(void);
 
 #endif

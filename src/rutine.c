@@ -6,11 +6,14 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 10:25:04 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/03 11:58:25 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/03 18:37:33 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
+
+/*Routine for a single philosopher, created solely to verify the functionality
+of a simple routine when I started the project.*/
 
 void	*ft_one_philo(void *arg)
 {
@@ -68,6 +71,15 @@ void	ft_right_or_left_handed(t_philo *philo)
 	}
 }
 
+/*This function is designed for each philosopher to "eat." To achieve this,
+we determine which fork the philosopher should pick up first using another
+function (see ft_right_or_left_handed()), update a variable that stores the
+last time a philosopher ate (crucial for checking a philosopher's demise). In
+case a fifth argument isn't provided, we keep track of the number of times
+each philosopher has eaten, as well as those who have consumed their required
+meals. We wait for the philosopher to finish eating (time_to_eat), and
+ultimately, we unlock the mutexes of the forks.*/
+
 void	*ft_eat(t_philo *philo)
 {
 	if (ft_must_stop(philo->table))
@@ -90,6 +102,9 @@ void	*ft_eat(t_philo *philo)
 	return (NULL);
 }
 
+/*This function is designed for every philosopher to "sleep" and
+essentially wait until they "wake up" (time_to_sleep).*/
+
 void	*ft_sleep(t_philo *philo)
 {
 	long long	s;
@@ -104,7 +119,12 @@ void	*ft_sleep(t_philo *philo)
 	return (NULL);
 }
 
-//casos particulares a raiz del resultado de think??
+/*This function is designed for every philosopher to "think," and it is
+very similar to the sleeping function.
+The only difference is that we need to calculate the thinking time for each
+philosopher ourselves. I calculate it proportionally based on the other three
+time intervals and divide it accordingly, ensuring that a philosopher never
+spends either too much or too little time thinking.*/
 
 void	*ft_think(t_philo *philo)
 {

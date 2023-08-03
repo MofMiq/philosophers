@@ -6,11 +6,14 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:45:50 by marirodr          #+#    #+#             */
-/*   Updated: 2023/07/26 12:45:53 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:03:22 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
+
+/*This function verifies that the arguments have the formats and specifications
+of the subject.*/
 
 int	ft_check_arg(char **argv)
 {
@@ -28,6 +31,8 @@ int	ft_check_arg(char **argv)
 	return (0);
 }
 
+/*This function verifies whether the arguments are numerical values.*/
+
 int	ft_is_number(char *str)
 {
 	int	i;
@@ -44,6 +49,9 @@ int	ft_is_number(char *str)
 	return (0);
 }
 
+/*This funcion verifies whether the arguments are positive values whitin
+the limits of integer.*/
+
 int	ft_number_limit(char *str)
 {
 	long	nb;
@@ -53,6 +61,8 @@ int	ft_number_limit(char *str)
 		return (0);
 	return (1);
 }
+
+/*This function converts the arguments from strings to numbers.*/
 
 long	ft_atol(char *str)
 {

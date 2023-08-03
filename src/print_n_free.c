@@ -6,11 +6,13 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:46:17 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/03 13:14:00 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/03 18:03:26 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
+
+/*This is a simple funtion to print different error messages.*/
 
 void	ft_print_error(int error)
 {
@@ -29,12 +31,21 @@ void	ft_print_error(int error)
 	exit(1);
 }
 
+/*si comento todo los !ft_must_stop cuando muere un filo aparecen varios
+mensajes despues y aparentemente no arregla el data race.
+el que si hace algo es en i = 2 porque es cuando muere alguien y el
+mutex_table esta bloqueado para sobreescibir 'dead' mientras al mismo tiempo
+se intenta acceder al valor de esa variable desde ft_print_msg*/
+
+/*This function prints out each action that every philosopher can perform
+during the execution of the program.*/
+
 void	ft_print_msg(t_philo *philo, int i)
 {
 	if (i == 1 && !ft_must_stop(philo->table))
 		printf("%s[%lld] %d has taken a fork%s\n", YELLOW, \
 			ft_current_time(philo->table), philo->id, END);
-	else if (i == 2 && !ft_must_stop(philo->table))
+	else if (i == 2 /*&& !ft_must_stop(philo->table)*/)
 		printf("%s[%lld] %d died%s\n", RED, \
 			ft_current_time(philo->table), philo->id, END);
 	else if (i == 3 && !ft_must_stop(philo->table))
@@ -48,6 +59,8 @@ void	ft_print_msg(t_philo *philo, int i)
 			ft_current_time(philo->table), philo->id, END);
 }
 
+/*Free every mutex created as forks for each philosopher.*/
+
 void	ft_free_forks_mutex(t_table *table)
 {
 	int	i;
@@ -60,6 +73,11 @@ void	ft_free_forks_mutex(t_table *table)
 	}
 	free(table->forks);
 }
+
+/*Free every resource needed: structures, mutexes and threads.
+For threads, we call pthread_join() function, that is used to make the
+program wait until the threads have finished executing and the resources
+associated with that thread will be freed.*/
 
 void	ft_free_all(t_philo *philo, t_table *table)
 {
