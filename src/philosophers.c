@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:42:59 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/03 12:19:58 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:09:35 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_init_forks(t_table *table)
 	{
 		if ((pthread_mutex_init(&table->forks[i], NULL)) != 0)
 		{
-			//own free function & detroy mutex ??
+			ft_free_forks_mutex(table);
 			ft_print_error(MUTEX);
 		}
 		i++;
@@ -88,8 +88,14 @@ void	ft_init_philosophers(t_philo *philo, t_table *table)
 	}
 }
 
+void	ft_leaks(void)
+{
+	system("leaks -q philo");
+}
+
 int	main(int argc, char **argv)
 {
+	atexit(ft_leaks);
 	t_table	table;
 	t_philo	*philo;
 

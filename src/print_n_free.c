@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:46:17 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/03 12:14:42 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:14:00 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,19 @@ void	ft_print_msg(t_philo *philo, int i)
 			ft_current_time(philo->table), philo->id, END);
 }
 
+void	ft_free_forks_mutex(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->nbr_philo)
+	{
+		pthread_mutex_destroy(&table->forks[i]);
+		i++;
+	}
+	free(table->forks);
+}
+
 void	ft_free_all(t_philo *philo, t_table *table)
 {
 	int	i;
@@ -59,13 +72,9 @@ void	ft_free_all(t_philo *philo, t_table *table)
 		i++;
 	}
 	i = 0;
-	while (i < table->nbr_philo)
-	{
-		pthread_mutex_destroy(&table->forks[i]);
-		i++;
-	}
-	free(table->forks);
+	ft_free_forks_mutex(table);
+	pthread_mutex_destroy(table->mutex_table);
+	free(table->mutex_table);
 	free(philo);
-	return ; //?
-	//free(table);??
+	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:21:57 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/03 11:53:52 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:09:06 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_philo
 //print_n_free.c
 void		ft_print_error(int error);
 void		ft_print_msg(t_philo *philo, int i);
+void		ft_free_forks_mutex(t_table *table);
 void		ft_free_all(t_philo *philo, t_table *table);
 
 //check_arg.c
@@ -93,5 +94,8 @@ void		*ft_eat(t_philo *philo);
 void		*ft_sleep(t_philo *philo);
 void		*ft_think(t_philo *philo);
 void		ft_right_or_left_handed(t_philo *philo);
+
+//debug
+void		ft_leaks(void);
 
 #endif
