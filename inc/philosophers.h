@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:21:57 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/02 15:58:41 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/03 11:53:52 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,13 @@ typedef struct s_table
 	pthread_mutex_t	*mutex_table;
 }	t_table;
 
+//int				indice[2]; //for debuging forks
+
 typedef struct s_philo
 {
 	pthread_t		thread;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
-	int				indice[2]; //erase
 	int				id;
 	int				cur_eat;
 	long long		last_eat;
@@ -62,6 +63,7 @@ typedef struct s_philo
 
 //print_n_free.c
 void		ft_print_error(int error);
+void		ft_print_msg(t_philo *philo, int i);
 void		ft_free_all(t_philo *philo, t_table *table);
 
 //check_arg.c
@@ -71,25 +73,25 @@ int			ft_number_limit(char *str);
 long		ft_atol(char *str);
 
 //philosophers.c (main)
-int			ft_must_stop(t_table *table);
-void		ft_infinite_loop(t_philo *philo, t_table *table);
-void		*ft_testing(void *arg);
-void		ft_create_thread(t_philo *philo, t_table *table);
-int			ft_is_dead(t_philo *philo);
+void		ft_init_forks(t_table *table);
+void		ft_init_table(int argc, char **argv, t_table *table);
+void		ft_init_philosophers(t_philo *philo, t_table *table);
 //time.c
 long long	ft_get_system_time(void);
 long long	ft_current_time(t_table *table);
 
-//init.c
-void		ft_init_forks(t_table *table);
-void		ft_init_table(int argc, char **argv, t_table *table);
-void		ft_init_philosophers(t_philo *philo, t_table *table);
+//loop.c
+int			ft_must_stop(t_table *table);
+int			ft_is_dead(t_philo *philo);
+void		ft_infinite_loop(t_philo *philo, t_table *table);
+void		*ft_testing(void *arg);
+void		ft_create_thread(t_philo *philo, t_table *table);
 
 //rutine.c
-void		ft_print_msg(t_philo *philo, int i);
 void		*ft_one_philo(void *arg);
 void		*ft_eat(t_philo *philo);
 void		*ft_sleep(t_philo *philo);
 void		*ft_think(t_philo *philo);
+void		ft_right_or_left_handed(t_philo *philo);
 
 #endif

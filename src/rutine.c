@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 10:25:04 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/02 17:38:20 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/03 11:58:25 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	*ft_one_philo(void *arg)
 	pthread_mutex_lock(&philo->table->forks[0]);
 	ft_print_msg(philo, 1);
 	pthread_mutex_unlock(&philo->table->forks[0]);
-	while ((ft_current_time(philo->table) + philo->last_eat) < philo->table->time_to_die)
+	while ((ft_current_time(philo->table) + philo->last_eat) \
+		< philo->table->time_to_die)
 		usleep(10);
 	ft_print_msg(philo, 2);
 	return (NULL);
@@ -36,41 +37,54 @@ colocan "su" tenedor a la izquierda (id - 1).
 los diestros empiezan cogiendo el tenedor a su derecha (id).
 los zurdos empiezan cogiendo el tenedor a su izquierda (id - 1).*/
 
-void	*ft_eat(t_philo *philo)
+/*
+printf("DIESTRO COJE 1er TENEDOR A DERECHA!!!!! %d\n", philo->indice[1]);
+printf("DIESTRO COJE 2o TENEDOR A IZQUIERDA!!!!! %d\n", philo->indice[0]);
+printf("ZURDO COJE 1er TENEDOR A IZQUIERDA!!!!! %d\n", philo->indice[0]);
+printf("ZURDO COJE 2o TENEDOR A DERECHA!!!!! %d\n", philo->indice[1]);
+printf("%d VECES QUE A COMIDO %d PHILO\n", philo->cur_eat, philo->id);
+printf("%d FILOSOFOS HAN COMIDO SUFICIENTEMENTE\n", philo->table->finished);
+*/
+
+void	ft_right_or_left_handed(t_philo *philo)
 {
-	if (ft_must_stop(philo->table))
-		return (NULL);
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->r_fork);
-		//printf("DIESTRO COJE 1er TENEDOR A DERECHA!!!!! %d\n", philo->indice[1]);//erase
 		ft_print_msg(philo, 1);
+		if (ft_must_stop(philo->table))
+			return ;
 		pthread_mutex_lock(philo->l_fork);
-		//printf("DIESTRO COJE 2o TENEDOR A IZQUIERDA!!!!! %d\n", philo->indice[0]);//erase
 		ft_print_msg(philo, 1);
 	}
 	else
 	{
 		pthread_mutex_lock(philo->l_fork);
-		//printf("ZURDO COJE 1er TENEDOR A IZQUIERDA!!!!! %d\n", philo->indice[0]);//erase
 		ft_print_msg(philo, 1);
+		if (ft_must_stop(philo->table))
+			return ;
 		pthread_mutex_lock(philo->r_fork);
-		//printf("ZURDO COJE 2o TENEDOR A DERECHA!!!!! %d\n", philo->indice[1]);//erase
 		ft_print_msg(philo, 1);
 	}
+}
+
+void	*ft_eat(t_philo *philo)
+{
+	if (ft_must_stop(philo->table))
+		return (NULL);
+	ft_right_or_left_handed(philo);
 	ft_print_msg(philo, 3);
 	philo->last_eat = ft_current_time(philo->table);
 	philo->cur_eat++;
-	if (philo->cur_eat == philo->table->nb_must_eat) //??
+	if (philo->cur_eat == philo->table->nb_must_eat)
 	{
 		pthread_mutex_lock(philo->table->mutex_table);
 		philo->table->finished++;
 		pthread_mutex_unlock(philo->table->mutex_table);
 	}
-	while (!ft_must_stop(philo->table) && (ft_current_time(philo->table) < philo->last_eat + philo->table->time_to_eat))
+	while (!ft_must_stop(philo->table) && (ft_current_time(philo->table) \
+		< philo->last_eat + philo->table->time_to_eat))
 		usleep(10);
-	//printf("%d VECES QUE A COMIDO %d PHILO\n", philo->cur_eat, philo->id);
-	//printf("%d FILOSOFOS HAN COMIDO SUFICIENTEMENTE\n", philo->table->finished);
 	pthread_mutex_unlock(philo->r_fork);
 	pthread_mutex_unlock(philo->l_fork);
 	return (NULL);
@@ -78,29 +92,33 @@ void	*ft_eat(t_philo *philo)
 
 void	*ft_sleep(t_philo *philo)
 {
-	long long	sleep;
+	long long	s;
 
-	if (ft_must_stop(philo->table) || philo->table->dead == 1)
+	if (ft_must_stop(philo->table))
 		return (NULL);
 	ft_print_msg(philo, 4);
-	sleep = ft_current_time(philo->table);
-	while (!ft_must_stop(philo->table) && (ft_current_time(philo->table) < sleep + philo->table->time_to_sleep))
+	s = ft_current_time(philo->table);
+	while (!ft_must_stop(philo->table)
+		&& (ft_current_time(philo->table) < s + philo->table->time_to_sleep))
 		usleep(10);
 	return (NULL);
 }
+
+//casos particulares a raiz del resultado de think??
 
 void	*ft_think(t_philo *philo)
 {
 	long long	think;
 	long long	time;
 
-	if (ft_must_stop(philo->table) || philo->table->dead == 1)
+	if (ft_must_stop(philo->table))
 		return (NULL);
 	ft_print_msg(philo, 5);
-	think = (philo->table->time_to_die - (philo->table->time_to_eat + philo->table->time_to_sleep)) / 2;
+	think = (philo->table->time_to_die - (philo->table->time_to_eat \
+		+ philo->table->time_to_sleep)) / 2;
 	time = ft_current_time(philo->table);
-	//casos particulares a raiz del resultado de think??
-	while (!ft_must_stop(philo->table) && (ft_current_time(philo->table) < time + think))
+	while (!ft_must_stop(philo->table)
+		&& (ft_current_time(philo->table) < time + think))
 		usleep(10);
 	return (NULL);
 }
