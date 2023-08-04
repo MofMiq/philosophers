@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:21:57 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/03 17:42:52 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/04 11:32:21 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <limits.h>
+# include <sys/types.h>
 
 # define YELLOW "\033[0;93m"
 # define BLUE "\033[0;96m"
@@ -88,7 +89,7 @@ long long	ft_current_time(t_table *table);
 int			ft_must_stop(t_table *table);
 int			ft_is_dead(t_philo *philo);
 void		ft_infinite_loop(t_philo *philo, t_table *table);
-void		*ft_testing(void *arg);
+void		*ft_rutine(void *arg);
 void		ft_create_thread(t_philo *philo, t_table *table);
 
 //rutine.c

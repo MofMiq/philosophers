@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 10:25:04 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/03 18:37:33 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/04 10:10:54 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,12 @@ void	*ft_one_philo(void *arg)
 	return (NULL);
 }
 
-/*los filosofos se sientan en sentido antihorario.
-colocan "su" tenedor a la izquierda (id - 1).
-los diestros empiezan cogiendo el tenedor a su derecha (id).
-los zurdos empiezan cogiendo el tenedor a su izquierda (id - 1).*/
-
-/*
-printf("DIESTRO COJE 1er TENEDOR A DERECHA!!!!! %d\n", philo->indice[1]);
-printf("DIESTRO COJE 2o TENEDOR A IZQUIERDA!!!!! %d\n", philo->indice[0]);
-printf("ZURDO COJE 1er TENEDOR A IZQUIERDA!!!!! %d\n", philo->indice[0]);
-printf("ZURDO COJE 2o TENEDOR A DERECHA!!!!! %d\n", philo->indice[1]);
-printf("%d VECES QUE A COMIDO %d PHILO\n", philo->cur_eat, philo->id);
-printf("%d FILOSOFOS HAN COMIDO SUFICIENTEMENTE\n", philo->table->finished);
-*/
+/*With this function, we will make the philosophers either right-handed or
+left-handed, meaning we will designate that philosophers with even IDs pick up
+the right fork first, followed by the left one, and vice versa for philosophers
+with odd IDs. We do this to prevent deadlocks right from the start of the
+simulation. If all philosophers were to pick up either the right or left fork,
+they would be left waiting without eating until they die.*/
 
 void	ft_right_or_left_handed(t_philo *philo)
 {

@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:42:59 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/03 18:21:57 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/04 11:44:30 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	ft_init_forks(t_table *table)
 			ft_free_forks_mutex(table);
 			ft_print_error(MUTEX);
 		}
+		printf("Direccion de memoria del mutex %d: %p\n", i, &table->forks[i]);
 		i++;
 	}
 }
@@ -71,6 +72,7 @@ void	ft_init_table(int argc, char **argv, t_table *table)
 		ft_print_error(MALLOC_FAIL);
 	if ((pthread_mutex_init(table->mutex_table, NULL)) != 0)
 		ft_print_error(MUTEX);
+	printf("Direccion de memoria del mutex_table : %p\n", &table->mutex_table);
 	ft_init_forks(table);
 }
 
@@ -82,6 +84,13 @@ assign the table to the structure to retain its reference, and we allocate
 the forks that each philosopher will use for eating. Specifically, each
 philosopher takes hold of their "own" fork and the one next to it (n + 1),
 except for the last philosopher who takes the first fork placed on the table.
+			 		[1]
+			 ---------
+	 		|	1		 	 0|
+	 [2]|				 	|	[4]
+	 		|	2			 3|
+			 ---------
+			 		[3]
 */
 
 void	ft_init_philosophers(t_philo *philo, t_table *table)
