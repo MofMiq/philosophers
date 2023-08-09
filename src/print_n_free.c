@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:46:17 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/03 18:03:26 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/08 18:43:22 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	ft_free_all(t_philo *philo, t_table *table)
 		pthread_join(philo[i].thread, NULL);
 		i++;
 	}
-	i = 0;
 	ft_free_forks_mutex(table);
 	pthread_mutex_destroy(table->mutex_table);
 	free(table->mutex_table);

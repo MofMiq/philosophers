@@ -6,7 +6,7 @@
 #    By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/17 14:06:30 by marirodr          #+#    #+#              #
-#    Updated: 2023/08/04 11:10:37 by marirodr         ###   ########.fr        #
+#    Updated: 2023/08/09 10:13:00 by marirodr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC			= gcc
 
 
 CTHR		= -pthread
-# -fsanitize=thread
+# -fsanitize=thread -g
 CFLAGS	= -fsanitize=thread -g -Wall -Wextra -Werror
 
 SRC			= src/philosophers.c \

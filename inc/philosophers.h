@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:21:57 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/04 11:32:21 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/08 19:09:54 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_table
 	long long		time_start;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	*mutex_table;
+	pthread_mutex_t	mutex_time;
 }	t_table;
 
 //int indice[2]; //for debuging forks
@@ -56,6 +57,7 @@ typedef struct s_philo
 	pthread_t		thread;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
+	pthread_mutex_t	*mutex_eat;
 	int				id;
 	int				cur_eat;
 	long long		last_eat;

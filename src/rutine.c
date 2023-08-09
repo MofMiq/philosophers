@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 10:25:04 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/04 10:10:54 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/08 19:11:01 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	*ft_one_philo(void *arg)
 	pthread_mutex_unlock(&philo->table->forks[0]);
 	while ((ft_current_time(philo->table) + philo->last_eat) \
 		< philo->table->time_to_die)
-		usleep(10);
+		usleep(100);
 	ft_print_msg(philo, 2);
 	return (NULL);
 }
@@ -75,11 +75,11 @@ ultimately, we unlock the mutexes of the forks.*/
 
 void	*ft_eat(t_philo *philo)
 {
-	if (ft_must_stop(philo->table))
-		return (NULL);
 	ft_right_or_left_handed(philo);
 	ft_print_msg(philo, 3);
+	pthread_mutex_lock(philo->mutex_eat);
 	philo->last_eat = ft_current_time(philo->table);
+	pthread_mutex_unlock(philo->mutex_eat);
 	philo->cur_eat++;
 	if (philo->cur_eat == philo->table->nb_must_eat)
 	{
@@ -89,7 +89,7 @@ void	*ft_eat(t_philo *philo)
 	}
 	while (!ft_must_stop(philo->table) && (ft_current_time(philo->table) \
 		< philo->last_eat + philo->table->time_to_eat))
-		usleep(10);
+		usleep(100);
 	pthread_mutex_unlock(philo->r_fork);
 	pthread_mutex_unlock(philo->l_fork);
 	return (NULL);
@@ -102,13 +102,11 @@ void	*ft_sleep(t_philo *philo)
 {
 	long long	s;
 
-	if (ft_must_stop(philo->table))
-		return (NULL);
 	ft_print_msg(philo, 4);
 	s = ft_current_time(philo->table);
 	while (!ft_must_stop(philo->table)
 		&& (ft_current_time(philo->table) < s + philo->table->time_to_sleep))
-		usleep(10);
+		usleep(100);
 	return (NULL);
 }
 
@@ -124,14 +122,12 @@ void	*ft_think(t_philo *philo)
 	long long	think;
 	long long	time;
 
-	if (ft_must_stop(philo->table))
-		return (NULL);
 	ft_print_msg(philo, 5);
 	think = (philo->table->time_to_die - (philo->table->time_to_eat \
 		+ philo->table->time_to_sleep)) / 2;
 	time = ft_current_time(philo->table);
 	while (!ft_must_stop(philo->table)
 		&& (ft_current_time(philo->table) < time + think))
-		usleep(10);
+		usleep(100);
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:42:59 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/04 11:44:30 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/08 19:13:44 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void	ft_init_table(int argc, char **argv, t_table *table)
 		ft_print_error(MALLOC_FAIL);
 	if ((pthread_mutex_init(table->mutex_table, NULL)) != 0)
 		ft_print_error(MUTEX);
+	if ((pthread_mutex_init(&table->mutex_time, NULL)) != 0)
+		ft_print_error(MUTEX);
 	printf("Direccion de memoria del mutex_table : %p\n", &table->mutex_table);
 	ft_init_forks(table);
 }
@@ -104,6 +106,9 @@ void	ft_init_philosophers(t_philo *philo, t_table *table)
 		philo[i].cur_eat = 0;
 		philo[i].last_eat = 0;
 		philo[i].table = table;
+		philo[i].mutex_eat = malloc(sizeof(pthread_mutex_t));
+		if ((pthread_mutex_init(philo[i].mutex_eat, NULL)) != 0)
+			ft_print_error(MUTEX);
 		if (philo[i].id == table->nbr_philo)
 		{
 			philo[i].l_fork = &table->forks[i];

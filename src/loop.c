@@ -6,12 +6,11 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:33:17 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/04 11:46:50 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/09 10:18:26 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
-
 
 /*si comento los mutex_table me dan pecha de warnings de data race cuango
 compilo con fsanitize pero el caso "base" de muerte (4 310 200 100) sigue
@@ -54,9 +53,13 @@ hasn't consumed a meal within the time required to survive.*/
 
 int	ft_is_dead(t_philo *philo)
 {
+	long long	time;
+
 	pthread_mutex_lock(philo->table->mutex_table);
-	if ((ft_current_time(philo->table) - philo->last_eat) >= \
-		philo->table->time_to_die)
+	pthread_mutex_lock(philo->mutex_eat);
+	time = (ft_current_time(philo->table) - philo->last_eat);
+	pthread_mutex_unlock(philo->mutex_eat);
+	if (time >= philo->table->time_to_die)
 	{
 		ft_print_msg(philo, 2);
 		philo->table->dead = 1;
@@ -75,11 +78,20 @@ two conditions causes it to stop (see ft_must_stop()).*/
 
 void	ft_infinite_loop(t_philo *philo, t_table *table)
 {
+	int	i;
+
 	while (1)
 	{
-		if (ft_must_stop(table) || ft_is_dead(philo))
+		i = 0;
+		while (i < table->nbr_philo) //data race aqui
+		{
+			if (ft_is_dead(&philo[i]))
+				break ;
+			i++;
+		}
+		if (ft_must_stop(table))
 			break ;
-		usleep(1);
+		usleep(100);
 	}
 	return ;
 }
@@ -103,18 +115,24 @@ void	*ft_rutine(void *arg)
 		return (NULL);
 	while (ft_current_time(philo->table) < 0)
 	{
+		pthread_mutex_lock(philo->mutex_eat);
 		philo->last_eat = ft_current_time(philo->table);
-		usleep(1);
+		pthread_mutex_unlock(philo->mutex_eat);
+		usleep(20);
 	}
 	if (philo->id % 2 == 0)
 		usleep(50);
-	while (!ft_must_stop(philo->table) && philo->table->dead == 0)
+	while (!ft_must_stop(philo->table))
 	{
-		if (!ft_must_stop(philo->table) && philo->table->dead == 0)
+		if (!ft_must_stop(philo->table))
 			ft_eat(philo);
-		if (!ft_must_stop(philo->table) && philo->table->dead == 0)
+		else 
+			break ;
+		if (!ft_must_stop(philo->table))
 			ft_sleep(philo);
-		if (!ft_must_stop(philo->table) && philo->table->dead == 0)
+		else
+			break ;
+		if (!ft_must_stop(philo->table))
 			ft_think(philo);
 	}
 	return (NULL);
