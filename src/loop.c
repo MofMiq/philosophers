@@ -6,19 +6,11 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 16:33:17 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/09 10:18:26 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/09 13:36:21 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
-
-/*si comento los mutex_table me dan pecha de warnings de data race cuango
-compilo con fsanitize pero el caso "base" de muerte (4 310 200 100) sigue
-funcionando.
-en cambio si descomento los mutex_table, se me reducen pecha los warning -solo
-me queda aparentemente 1 en ft_is_dead- pero el caso "base" de muerte deja
-de funcionar, no termina y sale data race en ft_is_dead
-en ft_is_dead hhay aparentemente data race en cualquier caso*/
 
 /*This function continuously checks whether any of the variables that determine
 the program's state have changed. First, we verify if "finished" is equal to
@@ -83,7 +75,7 @@ void	ft_infinite_loop(t_philo *philo, t_table *table)
 	while (1)
 	{
 		i = 0;
-		while (i < table->nbr_philo) //data race aqui
+		while (i < table->nbr_philo)
 		{
 			if (ft_is_dead(&philo[i]))
 				break ;
@@ -109,8 +101,6 @@ void	*ft_rutine(void *arg)
 	t_philo		*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->table->nb_must_eat == 0)
-		return (NULL);
 	if (philo->table->time_to_die == 0)
 		return (NULL);
 	while (ft_current_time(philo->table) < 0)
@@ -126,12 +116,8 @@ void	*ft_rutine(void *arg)
 	{
 		if (!ft_must_stop(philo->table))
 			ft_eat(philo);
-		else 
-			break ;
 		if (!ft_must_stop(philo->table))
 			ft_sleep(philo);
-		else
-			break ;
 		if (!ft_must_stop(philo->table))
 			ft_think(philo);
 	}
@@ -168,7 +154,6 @@ void	ft_create_thread(t_philo *philo, t_table *table)
 			if ((pthread_create(&philo[i].thread, NULL, ft_rutine, \
 				&philo[i])) != 0)
 				ft_print_error(THREAD);
-			printf("Direccion de memoria del hilo con tid %d: %p\n", philo[i].id, &philo[i].thread);
 			i++;
 		}
 		ft_infinite_loop(philo, table);

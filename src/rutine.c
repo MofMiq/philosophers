@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 10:25:04 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/08 19:11:01 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/09 10:47:45 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,15 +119,12 @@ spends either too much or too little time thinking.*/
 
 void	*ft_think(t_philo *philo)
 {
-	long long	think;
 	long long	time;
 
 	ft_print_msg(philo, 5);
-	think = (philo->table->time_to_die - (philo->table->time_to_eat \
-		+ philo->table->time_to_sleep)) / 2;
 	time = ft_current_time(philo->table);
 	while (!ft_must_stop(philo->table)
-		&& (ft_current_time(philo->table) < time + think))
+		&& (ft_current_time(philo->table) < time + philo->table->time_to_think))
 		usleep(100);
 	return (NULL);
 }

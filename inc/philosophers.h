@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:21:57 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/08 19:09:54 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/09 13:35:55 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <limits.h>
-# include <sys/types.h>
 
 # define YELLOW "\033[0;93m"
 # define BLUE "\033[0;96m"
@@ -42,15 +41,13 @@ typedef struct s_table
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				nb_must_eat;
+	int				time_to_think;
 	int				finished;
 	int				dead;
 	long long		time_start;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	*mutex_table;
-	pthread_mutex_t	mutex_time;
 }	t_table;
-
-//int indice[2]; //for debuging forks
 
 typedef struct s_philo
 {

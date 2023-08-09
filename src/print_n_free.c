@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:46:17 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/08 18:43:22 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/09 11:58:54 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,6 @@ void	ft_print_error(int error)
 	exit(1);
 }
 
-/*si comento todo los !ft_must_stop cuando muere un filo aparecen varios
-mensajes despues y aparentemente no arregla el data race.
-el que si hace algo es en i = 2 porque es cuando muere alguien y el
-mutex_table esta bloqueado para sobreescibir 'dead' mientras al mismo tiempo
-se intenta acceder al valor de esa variable desde ft_print_msg*/
-
 /*This function prints out each action that every philosopher can perform
 during the execution of the program.*/
 
@@ -45,7 +39,7 @@ void	ft_print_msg(t_philo *philo, int i)
 	if (i == 1 && !ft_must_stop(philo->table))
 		printf("%s[%lld] %d has taken a fork%s\n", YELLOW, \
 			ft_current_time(philo->table), philo->id, END);
-	else if (i == 2 /*&& !ft_must_stop(philo->table)*/)
+	else if (i == 2)
 		printf("%s[%lld] %d died%s\n", RED, \
 			ft_current_time(philo->table), philo->id, END);
 	else if (i == 3 && !ft_must_stop(philo->table))
@@ -87,11 +81,12 @@ void	ft_free_all(t_philo *philo, t_table *table)
 	while (i < table->nbr_philo)
 	{
 		pthread_join(philo[i].thread, NULL);
+		pthread_mutex_destroy(philo[i].mutex_eat);
+		free(philo[i].mutex_eat);
 		i++;
 	}
 	ft_free_forks_mutex(table);
 	pthread_mutex_destroy(table->mutex_table);
 	free(table->mutex_table);
 	free(philo);
-	return ;
 }

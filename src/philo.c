@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:42:59 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/08 19:13:44 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/09 11:56:11 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	ft_init_forks(t_table *table)
 			ft_free_forks_mutex(table);
 			ft_print_error(MUTEX);
 		}
-		printf("Direccion de memoria del mutex %d: %p\n", i, &table->forks[i]);
 		i++;
 	}
 }
@@ -57,11 +56,13 @@ void	ft_init_table(int argc, char **argv, t_table *table)
 	table->time_to_die = ft_atol(argv[2]);
 	table->time_to_eat = ft_atol(argv[3]);
 	table->time_to_sleep = ft_atol(argv[4]);
+	table->time_to_think = (table->time_to_die - \
+		(table->time_to_eat + table->time_to_sleep)) / 2;
 	if (argc == 6)
 	{
 		table->nb_must_eat = ft_atol(argv[5]);
-		/*if (table->nb_must_eat == 0)
-			ft_print_error(EXCED_LIMT);*/
+		if (table->nb_must_eat == 0)
+			ft_print_error(EXCED_LIMT);
 	}
 	else
 		table->nb_must_eat = -1;
@@ -72,9 +73,6 @@ void	ft_init_table(int argc, char **argv, t_table *table)
 		ft_print_error(MALLOC_FAIL);
 	if ((pthread_mutex_init(table->mutex_table, NULL)) != 0)
 		ft_print_error(MUTEX);
-	if ((pthread_mutex_init(&table->mutex_time, NULL)) != 0)
-		ft_print_error(MUTEX);
-	printf("Direccion de memoria del mutex_table : %p\n", &table->mutex_table);
 	ft_init_forks(table);
 }
 
@@ -99,14 +97,16 @@ void	ft_init_philosophers(t_philo *philo, t_table *table)
 {
 	int	i;
 
-	i = 0;
-	while (i < table->nbr_philo)
+	i = -1;
+	while (i++ < table->nbr_philo - 1)
 	{
 		philo[i].id = i + 1;
 		philo[i].cur_eat = 0;
 		philo[i].last_eat = 0;
 		philo[i].table = table;
 		philo[i].mutex_eat = malloc(sizeof(pthread_mutex_t));
+		if (!philo[i].mutex_eat)
+			ft_print_error(MALLOC_FAIL);
 		if ((pthread_mutex_init(philo[i].mutex_eat, NULL)) != 0)
 			ft_print_error(MUTEX);
 		if (philo[i].id == table->nbr_philo)
@@ -119,7 +119,6 @@ void	ft_init_philosophers(t_philo *philo, t_table *table)
 			philo[i].l_fork = &table->forks[i];
 			philo[i].r_fork = &table->forks[i + 1];
 		}
-		i++;
 	}
 }
 
@@ -146,4 +145,5 @@ int	main(int argc, char **argv)
 		ft_print_error(MALLOC_FAIL);
 	ft_init_philosophers(philo, &table);
 	ft_create_thread(philo, &table);
+	return (0);
 }

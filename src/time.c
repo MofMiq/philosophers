@@ -6,7 +6,7 @@
 /*   By: marirodr <marirodr@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:18:39 by marirodr          #+#    #+#             */
-/*   Updated: 2023/08/08 18:22:32 by marirodr         ###   ########.fr       */
+/*   Updated: 2023/08/09 10:36:28 by marirodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,5 @@ in the output whether the philosophers adhere to the specified timings.*/
 
 long long	ft_current_time(t_table *table)
 {
-	long long	time;
-
-	//pthread_mutex_lock(&table->mutex_time);
-	time = ft_get_system_time() - table->time_start;
-	//pthread_mutex_unlock(&table->mutex_time);
-	return (time);
+	return (ft_get_system_time() - table->time_start);
 }
