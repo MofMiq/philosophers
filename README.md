@@ -54,3 +54,12 @@ A **thread** is a basic unit of CPU utilization that a program can use to perfor
 
 A **mutex** (short for mutual exclusion) is a synchronization primitive used to avoid race conditions by ensuring that only one thread can access a critical section of code at a time. This is crucial when multiple threads modify shared resources. A mutex is **ALWAYS** needed when two or more different threads read and change the same variable or data structure.
 
+## Some tips to avoid deadlocks or other problems:
+
+* Advance the start time of the routines before creating the philosophers (threads) to give time for all of them to be created and thus start at the same time.
+```bash
+table->time_start = ft_get_system_time() + table->nbr_philo * 20;
+```
+* Give a small delay to the start of the routine for even-numbered philosophers so that the routine runs more smoothly.
+
+* Make the philosophers left-handed or right-handed. Obviously not literally, but depending on whether the philosopher is even or odd, they will first pick up their own fork or    the fork of the philosopher to their left, thus avoiding deadlocks. More visually, in the case of having two philosophers, we avoid each one picking up their own fork at the     same time and waiting indefinitely. By making them left-handed and right-handed, both will go for the same fork first, and whoever grabs it first can then go for the other       fork and start their routine without risk of deadlock.
