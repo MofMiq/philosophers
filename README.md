@@ -1,6 +1,8 @@
 # Philosophers
+> This repository contains a "Philosophers" project that is part of the École 42 curriculum.
 
 In this project we must resolve the famous dining philosophers problem, which is an example problem often used in concurrent algorithm design to illustrate synchronization issues and techniques for resolving them.
+Basically, this project serves as an introduction to concurrent programming and helps to better understand how it works and what it is useful for, as well as the potential errors that may arise.
 
 ---
 
@@ -46,3 +48,9 @@ In this project we must resolve the famous dining philosophers problem, which is
 ## Mandatory
 
 You must use threads and mutexes and each philosopher must be a thread.
+
+### Threads and mutexes
+A **thread** is a basic unit of CPU utilization that a program can use to perform concurrent operations. Threads are part of a process and share the same memory space but can execute independently. This allows for parallelism and can improve the efficiency of a program, especially on multi-core processors. In conlusion, they allow a program to perform multiple operations concurrently.
+
+A **mutex** (short for mutual exclusion) is a synchronization primitive used to avoid race conditions by ensuring that only one thread can access a critical section of code at a time. This is crucial when multiple threads modify shared resources. A mutex is **ALWAYS** needed when two or more different threads read and change the same variable or data structure.
+
