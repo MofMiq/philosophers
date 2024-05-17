@@ -32,6 +32,9 @@ Basically, this project serves as an introduction to concurrent programming and 
   * time_to_eat:
   * time_to_sleep:
   * number_of_times_each_philosphers_must_eat (optional):
+  ```bash
+    ./philo <n_philosophers> <time_to_die> <time_to_eat> <time_to_sleep> [n_of_meals]
+  ```
 * Each philosopher must have assig one number between 1 and number_of_philosophers.
 * They must be seaten de forma correlativa.
 * The output of each action must have this format:
